@@ -17,10 +17,18 @@ app.get("/", (req, res) => {
 app.get("/:number_of_bottles", (req, res) => {
   const requestedBottles = parseInt(req.params.number_of_bottles);
 
-  const responseArray = [
-    `<h1>${requestedBottles - 1} Bottles of beer on the wall</h1>`,
-    `<a href="/${Math.max(0, requestedBottles)}">Take one down, pass it around</a>`
-  ];
+  const takeOneDownLink = requestedBottles > 0
+  ? `<a href="/${requestedBottles - 1}">Take one down</a>`
+  : '';
+
+const startOverLink = `<a href="/">Start Over</a>`;
+
+const responseArray = [
+  `<h1>${requestedBottles} Bottles of beer on the wall</h1>`,
+  takeOneDownLink,
+  startOverLink
+];
+
 
   res.status(/^\d+$/.test(requestedBottles) && requestedBottles >= 0 ? 200 : 400).send(responseArray.join(''));
 });
